@@ -1,5 +1,9 @@
 import $http from 'axios'
+import router from '@/router'
+import store from '@/store'
+
 import { Indicator } from 'mint-ui';
+
 
 $http.default.timeout = 5000;
 $http.defaults.headers.post['Content-Type'] = 'application/json'
@@ -14,6 +18,7 @@ instance.interceptors.request.use(config => {
     Indicator.open({
         spinnerType: 'fading-circle'
     });
+
 	if(localStorage.getItem('token')) {
 		config.headers.Authorization = `token ${localStorage.getItem('token')}`.replace(/(^\")|(\"$)/g, '')
 	}
@@ -27,21 +32,22 @@ instance.interceptors.request.use(config => {
 // axios拦截响应
 instance.interceptors.response.use(response => {
     Indicator.close();
-	return response
-}, err => {
-    Indicator.close();
-    if (err.response) {
-        console.log(err.response)
-        switch (err.response.status) {
-            case 401:
-                // 401 清除token信息并跳转到登录页面
-                //store.commit(types.LOGOUT);
-                //router.replace({
-                //    path: 'login',
-                //    query: {redirect: router.currentRoute.fullPath}
-                //})
-        }
+    console.log(response);
+    if (response) {
     }
+    switch (response.data.code) {
+        case 401:
+            // 401 清除token信息并跳转到登录页面
+            store.commit('delToken',null)
+            router.replace({
+                path: '/',
+                query: {redirect: router.currentRoute.fullPath}
+            })
+    }
+    return response
+}, err => {
+    console.log('huilai')
+    Indicator.close();
 	return Promise.reject(err)
 })
 
