@@ -1,8 +1,8 @@
 <template>
     <div class="nearby">
         <h3 class="nearby_title">附近的餐厅</h3>
-        <ul class="restaurant_list">
-            <li class="item" v-for="(item,index) in restaurantListData">
+        <ul class="restaurant_list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
+            <li class="item" v-for="(item,index) in restaurantListData" @click="gouTo(index)">
                 <div class="restaurant_pic">
                     <img :src="item.restaurantPic">
                 </div>
@@ -27,7 +27,8 @@
 </template>
 
 <script>
-    import API from '@/API/axios'
+    import API from '@/API/axios';
+    import { InfiniteScroll } from 'mint-ui';
     export default {
         name: '',
         data () {
@@ -39,15 +40,17 @@
             getRestaurantInfo(){
                 API.getRestaurantInfo().then(({data})=>{
                     if(data.code == 200){
-                        this.restaurantListData = data.data;
+                        this.restaurantListData = this.restaurantListData.concat(data.data);
                     }else {
                         this.$toast(data.msg);
                     }
                 })
+            },
+            loadMore() {
+                this.getRestaurantInfo();
             }
         },
         mounted () { // 代替ready
-            this.getRestaurantInfo()
         }
 
     }
