@@ -1,0 +1,77 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('../fonts/icomoon.eot?et96xx');
+  src:  url('../fonts/icomoon.eot?et96xx#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?et96xx') format('truetype'),
+    url('../fonts/icomoon.woff?et96xx') format('woff'),
+    url('../fonts/icomoon.svg?et96xx#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-file-text2:before {
+  content: "\e926";
+}
+.icon-cart:before {
+  content: "\e93a";
+}
+.icon-coin-dollar:before {
+  content: "\e93b";
+}
+.icon-coin-yen:before {
+  content: "\e93e";
+}
+.icon-location:before {
+  content: "\e947";
+}
+.icon-calendar:before {
+  content: "\e953";
+}
+.icon-spoon-knife:before {
+  content: "\e9a3";
+}
+.icon-airplane:before {
+  content: "\e9af";
+}
+.icon-truck:before {
+  content: "\e9b0";
+}
+.icon-heart:before {
+  content: "\e9da";
+}
+.icon-plus:before {
+  content: "\ea0a";
+}
+.icon-minus:before {
+  content: "\ea0b";
+}
+.icon-checkmark:before {
+  content: "\ea10";
+}
+.icon-ctrl:before {
+  content: "\ea50";
+}
+.icon-file-openoffice:before {
+  content: "\eae0";
+}
+.icon-libreoffice:before {
+  content: "\eae3";
+}
+.icon-IcoMoon:before {
+  content: "\eaea";
+}

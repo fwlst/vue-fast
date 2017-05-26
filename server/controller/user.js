@@ -4,8 +4,9 @@ const router = express.Router()
 const moment = require('moment')
 const objectIdToTimestamp = require('objectid-to-timestamp')
 const createToken = require('../middleware/createToken.js')
-const sha1 = require('sha1')
 const checkToken = require('../middleware/checkToken.js')
+const sha1 = require('sha1')
+
 
 const code_Ok = 200;
 const code_ERR = 600;
@@ -19,6 +20,11 @@ const Register = (req, res) => {
         confirm_pwd: body.confirm_pwd,
         recheck: body.recheck,
         token: createToken(this.userName),
+        head_pic: 'assets/img/dl.jpg',
+        nickname: '逍遥随心',
+        balance: '550',
+        integral: '130',
+        city: '深圳',
     })
     // 将 objectid 转换为 用户创建时间
     userRegister.create_time = moment(objectIdToTimestamp(userRegister._id));
@@ -100,11 +106,43 @@ const Login = (req, res) => {
 const User = (req, res) => {
     model.User.find({}, (err, doc) => {
         if(err) console.log(err)
-        res.send({
-            code: code_Ok,
-            data: doc,
-            msg: '获取成功'
-        })
+        if(doc.length == 0){
+            res.send({
+                code: code_ERR,
+                msg: '没有该用户信息'
+            })
+        }else {
+            res.send({
+                code: code_Ok,
+                data: doc,
+                msg: '用户信息获取成功'
+            })
+        }
+    })
+}
+
+// 获取用户信息
+const userInfo = (req, res) => {
+    model.User.find({userName: 'fwlst'}, (err, doc) => {
+        if(err) console.log(err)
+        if(doc.length == 0){
+            res.send({
+                code: code_ERR,
+                msg: '没有找到该用户信息'
+            })
+        }else {
+            let data = doc[0];
+            let delAttr = ['password','confirm_pwd','create_time','token','userName','__v'];
+            for (let i = 0; i < delAttr.length; i++){
+                let attr = delAttr[i]
+                data[attr] = undefined;
+            }
+            res.send({
+                code: code_Ok,
+                data: data,
+                msg: '用户信息获取成功'
+            })
+        }
     })
 }
 
@@ -119,9 +157,13 @@ const delUser = (req, res) => {
     })
 }
 
+
+
+
 module.exports = (router) => {
     router.post('/register', Register),
     router.post('/login', Login),
     router.get('/user', checkToken, User),
-    router.post('/delUser', checkToken, delUser)
+    router.post('/delUser', checkToken, delUser),
+    router.post('/userInfo', checkToken, userInfo)
 }

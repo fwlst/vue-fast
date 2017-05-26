@@ -1,15 +1,17 @@
 <template>
     <section class="index">
-        <h3 class="title">首页</h3>
-        <mt-button class="login_btn" type="primary" size="large" @click="loginOut">登出</mt-button>
-        <ul>
-            <li v-for="(user,index) in users">{{user.userName}}</li>
-        </ul>
+        <v-header></v-header>
+        <restaurantList></restaurantList>
+        <!--<h3 class="title">首页</h3>
+        <mt-button class="login_btn" type="primary" size="large" @click="loginOut"><span class="icon-location"></span>登出</mt-button>
+    -->
     </section>
 </template>
 
 <script>
     import API from '../API/axios'
+    import header from '../components/index/header.vue'
+    import restaurantList from '../components/index/restaurantList.vue'
     export default {
         name: '',
         data () {
@@ -22,10 +24,8 @@
                 let data = {
                     token: localStorage.getItem('token')
                 }
-                API.getUser().then(({data})=>{
+                API.AddRestaurantInfo().then(({data})=>{
                     if(data.code == 200){
-                        this.users = data.data;
-                        console.log(data,this.users)
                         /*localStorage.setItem('token',data.token);
                         this.$router.push({
                             name: 'Index'
@@ -35,6 +35,10 @@
                     }
                 })
             },
+        },
+        components: {
+            'v-header': header,
+            restaurantList
         },
         mounted () { // 代替ready
 

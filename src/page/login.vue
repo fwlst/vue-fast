@@ -6,7 +6,7 @@
             <mt-field label="密码：" placeholder="请输入密码" type="password" v-model.trim="form.password" @input="$v.form.password.$touch()"></mt-field>
         </div>
         <mt-button class="login_btn" type="primary" size="large" @click="onLogin">登陆</mt-button>
-        <router-link tag="div" class="to_register" to="/">没有账号？立马注册</router-link>
+        <router-link tag="div" class="to_register" to="/register">没有账号？立马注册</router-link>
     </section>
 </template>
 
@@ -18,8 +18,8 @@
         data () {
             return {
                 form: {
-                    userName: '',
-                    password: ''
+                    userName: 'fwlst',
+                    password: 'fwlst520/'
                 }
             }
         },
@@ -37,7 +37,6 @@
         methods: {
             onLogin(){
                 let form = this.$v.form
-                console.log(form)
                 if(!form.userName.required){
                     this.$toast('用户名不能为空');
                 }else if(!form.userName.minLength){
@@ -47,7 +46,8 @@
                 }else {
                     API.userLogin(this.form).then(({data})=>{
                         if(data.code == 200){
-                            localStorage.setItem('token',data.token);
+                            let token = data.token;
+                            this.$store.commit('updateToken',token);
                             this.$router.push('/index');
                         }else {
                             this.$toast(data.msg);

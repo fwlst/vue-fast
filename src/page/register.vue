@@ -7,7 +7,7 @@
             <mt-field label="确认密码：" placeholder="请输入密码" type="password" v-model.trim="form.confirm_pwd" @input="$v.form.confirm_pwd.$touch()"></mt-field>
         </div>
         <mt-button class="register_btn" type="primary" size="large" @click="onRegister">注册</mt-button>
-        <router-link tag="div" class="to_login" to="/login">已有账号？立马登陆</router-link>
+        <router-link tag="div" class="to_login" to="/">已有账号？立马登陆</router-link>
     </section>
 </template>
 
