@@ -37,7 +37,10 @@ footer, header, menu, nav, section {
     visibility: hidden;
     height: 0
 }
-
+#app{
+    max-width: 720px;
+    margin: 0 auto;
+}
 body {
     line-height: 1;
 }

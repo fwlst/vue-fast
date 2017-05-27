@@ -9,7 +9,7 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Connect error'))
 db.once('open', function () {
     console.log('MongoDB启动成功')
-})
+});
 
 
 let userSchema = mongoose.Schema({
@@ -24,7 +24,7 @@ let userSchema = mongoose.Schema({
     integral: String,
     city: String,
     create_time: Date
-})
+});
 
 let restaurantSchema = mongoose.Schema({
     restaurantName: String,
@@ -37,13 +37,13 @@ let restaurantSchema = mongoose.Schema({
     address: String,
     telephone: String,
     create_time: Date
-})
+});
 
 let model = {
     // 在此处扩展 model，例如：
     // Article: mongoose.model('Article', articleSchema),
     User: mongoose.model('User', userSchema),
     Restaurant: mongoose.model('Restaurant', restaurantSchema)
-}
+};
 
-module.exports = model
+module.exports = model;

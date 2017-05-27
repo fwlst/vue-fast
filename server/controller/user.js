@@ -1,11 +1,11 @@
-const express = require('express')
-const model = require('../db/db.js')
-const router = express.Router()
-const moment = require('moment')
-const objectIdToTimestamp = require('objectid-to-timestamp')
-const createToken = require('../middleware/createToken.js')
-const checkToken = require('../middleware/checkToken.js')
-const sha1 = require('sha1')
+const express = require('express');
+const model = require('../db/db.js');
+const router = express.Router();
+const moment = require('moment');
+const objectIdToTimestamp = require('objectid-to-timestamp');
+const createToken = require('../middleware/createToken.js');
+const checkToken = require('../middleware/checkToken.js');
+const sha1 = require('sha1');
 
 
 const code_Ok = 200;
@@ -75,16 +75,14 @@ const Login = (req, res) => {
         token: createToken(this.userName)
     })
     model.User.findOne({ userName: userLogin.userName }, (err, doc) => {
-        if(err) console.log(err)
+        if(err) console.log(err);
         if(!doc) {
-            console.log("账号不存在");
             res.json({
                 code: code_ERR,
-                msg: '账号不存在'
+                msg: '账号不存在,立即去注册？'
             })
         } else if(userLogin.password === doc.password) {
-            console.log('登录成功')
-            var userName = req.body.userName;
+            let userName = req.body.userName;
             res.json({
                 code: code_Ok,
                 userName: doc.userName,

@@ -1,6 +1,10 @@
 <template>
     <div class="nearby">
         <h3 class="nearby_title">附近的餐厅</h3>
+        <div class="add_restaurant" v-show="restaurantListData.length == 0">
+            <div class="text">什么鬼？没有餐厅信息？没关系点击下面按钮一键添加</div>
+            <mt-button class="login_btn" type="primary" size="large" @click="addRestaurant">一键添加多个餐厅</mt-button>
+        </div>
         <ul class="restaurant_list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
             <li class="item" v-for="(item,index) in restaurantListData" @click="gouTo(index)">
                 <div class="restaurant_pic">
@@ -37,17 +41,30 @@
             }
         },
         methods: {
-            getRestaurantInfo(){
-                API.getRestaurantInfo().then(({data})=>{
+            addRestaurant(){
+                API.addRestaurantInfo().then(({data})=>{
                     if(data.code == 200){
-                        this.restaurantListData = this.restaurantListData.concat(data.data);
+                        this.getRestaurantInfo();
                     }else {
                         this.$toast(data.msg);
                     }
                 })
             },
+            getRestaurantInfo(){
+                API.getRestaurantInfo().then(({data})=>{
+                    if(data.code == 200){
+                        this.restaurantListData = this.restaurantListData.concat(data.data);
+                    }else {
+                        //this.$toast(data.msg);
+                    }
+                })
+            },
             loadMore() {
                 this.getRestaurantInfo();
+            },
+            gouTo(index){
+                let _id = this.restaurantListData[index]._id;
+                console.log(_id);
             }
         },
         mounted () { // 代替ready
@@ -63,6 +80,16 @@
         .nearby_title{
             padding: 15px 0 5px 10px;
             font-weight: bold;
+        }
+        .add_restaurant{
+            width: 80%;
+            margin: 0 auto;
+            .text{
+                padding: 15px 0;
+                color: #ff4a40;
+                font-size: 18px;
+                line-height: 25px;
+            }
         }
         .restaurant_list{
 

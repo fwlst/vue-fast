@@ -1,13 +1,13 @@
 /**
  * Created by lstfw on 2017/5/25.
  */
-const express = require('express')
-const model = require('../db/db.js')
-const router = express.Router()
-const moment = require('moment')
-const objectIdToTimestamp = require('objectid-to-timestamp')
+const express = require('express');
+const model = require('../db/db.js');
+const router = express.Router();
+const moment = require('moment');
+const objectIdToTimestamp = require('objectid-to-timestamp');
 
-const _ = require('lodash')
+const _ = require('lodash');
 
 const code_Ok = 200;
 const code_ERR = 600;
@@ -96,9 +96,9 @@ const RestaurantInfo = (req, res) => {
             address: '深圳市南山区益田假日广场',
             telephone: '0755-85642365'
         }
-    ]
+    ];
     for (let i = 0; i < RestaurantDataS.length; i++){
-        let RestaurantData = new model.Restaurant(RestaurantDataS[i])
+        let RestaurantData = new model.Restaurant(RestaurantDataS[i]);
         console.log(RestaurantData);
         // 将 objectid 转换为 商户创建时间
         RestaurantData.create_time = moment(objectIdToTimestamp(RestaurantData._id));
@@ -114,12 +114,12 @@ const RestaurantInfo = (req, res) => {
         msg: '添加成功',
     })
 
-}
+};
 
 // 所有用户打印
 const GetRestaurant = (req, res) => {
     model.Restaurant.find({}, (err, doc) => {
-        if(err) console.log(err)
+        if(err) console.log(err);
         if(doc.length == 0){
             res.send({
                 code: code_ERR,
@@ -133,10 +133,10 @@ const GetRestaurant = (req, res) => {
             })
         }
     })
-}
+};
 
 
 module.exports = (router) => {
-    router.post('/restaurantInfo', RestaurantInfo)
+    router.post('/restaurantInfo', RestaurantInfo);
     router.post('/getRestaurant', GetRestaurant)
-}
+};
