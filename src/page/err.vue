@@ -13,7 +13,6 @@
             setErrHeight(){
                 let $err = document.getElementsByClassName('err');
                 $err[0].style.height = window.screen.height + 'px';
-                console.log($err,window.screen.height)
             }
         },
         mounted () { // 代替ready
@@ -22,7 +21,7 @@
     }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<!-- 加上 "scoped" 属性样式就成为组件私有样式 -->
 <style rel="stylesheet/less" lang="less" scoped>
     .err{
         display: flex;

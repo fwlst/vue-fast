@@ -3,6 +3,7 @@ import router from '@/router'
 import store from '@/store'
 
 import {Indicator} from 'mint-ui';
+import { Toast } from 'mint-ui';
 
 
 $http.default.timeout = 5000;
@@ -48,6 +49,7 @@ instance.interceptors.response.use(response => {
     return response
 }, err => {
     Indicator.close();
+    Toast('网络太差，请稍后再试');
     return Promise.reject(err)
 });
 
@@ -67,6 +69,10 @@ export default {
     // 获取用户信息
     getUserInfo(data) {
         return instance.post('/api/userInfo', data)
+    },
+    // 获取用户信息
+    updateHeadPic(data) {
+        return instance.post('/api/update_head_pic', data)
     },
     // 删除用户
     delUser(data) {

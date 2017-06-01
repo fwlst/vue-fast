@@ -25,7 +25,7 @@ const Register = (req, res) => {
         balance: '550',
         integral: '130',
         city: '深圳',
-    })
+    });
     // 将 objectid 转换为 用户创建时间
     userRegister.create_time = moment(objectIdToTimestamp(userRegister._id));
 
@@ -42,7 +42,7 @@ const Register = (req, res) => {
         })
     }else {
         model.User.findOne({userName: (userRegister.userName).toLowerCase()}, (err, doc) => {
-            if(err) console.log(err)
+            if(err) console.log(err);
 
             // 用户名已存在，不能注册
             if(doc) {
@@ -54,8 +54,7 @@ const Register = (req, res) => {
                 userRegister.password = sha1(userRegister.password);
                 userRegister.confirm_pwd = sha1(userRegister.confirm_pwd);
                 userRegister.save(err => {
-                    if(err) console.log(err)
-                    console.log('register success')
+                    if(err) console.log(err);
                     res.json({
                         code: code_Ok,
                         msg: '注册成功',
@@ -65,7 +64,7 @@ const Register = (req, res) => {
         })
     }
 
-}
+};
 
 // 登录
 const Login = (req, res) => {
@@ -73,7 +72,7 @@ const Login = (req, res) => {
         userName: req.body.userName,
         password: sha1(req.body.password),
         token: createToken(this.userName)
-    })
+    });
     model.User.findOne({ userName: userLogin.userName }, (err, doc) => {
         if(err) console.log(err);
         if(!doc) {
@@ -98,13 +97,13 @@ const Login = (req, res) => {
             })
         }
     })
-}
+};
 
 // 所有用户打印
 const User = (req, res) => {
     model.User.find({}, (err, doc) => {
-        if(err) console.log(err)
-        if(doc.length == 0){
+        if(err) console.log(err);
+        if(doc.length === 0){
             res.send({
                 code: code_ERR,
                 msg: '没有该用户信息'
@@ -117,13 +116,14 @@ const User = (req, res) => {
             })
         }
     })
-}
+};
 
 // 获取用户信息
 const userInfo = (req, res) => {
-    model.User.find({userName: 'fwlst'}, (err, doc) => {
-        if(err) console.log(err)
-        if(doc.length == 0){
+    let token = JSON.stringify(req.body);
+    model.User.find(token, (err, doc) => {
+        if(err) console.log(err);
+        if(doc.length === 0){
             res.send({
                 code: code_ERR,
                 msg: '没有找到该用户信息'
@@ -132,7 +132,7 @@ const userInfo = (req, res) => {
             let data = doc[0];
             let delAttr = ['password','confirm_pwd','create_time','token','userName','__v'];
             for (let i = 0; i < delAttr.length; i++){
-                let attr = delAttr[i]
+                let attr = delAttr[i];
                 data[attr] = undefined;
             }
             res.send({
@@ -142,18 +142,38 @@ const userInfo = (req, res) => {
             })
         }
     })
-}
+};
+
+// 更新用户头像
+const updateHeadPic = (req, res) => {
+    let token = JSON.stringify(req.body);
+    let update = {$set : {head_pic : req.body.head_pic}};
+    let options    = {upsert : true};
+    model.User.update(token,update,options, (err, doc) => {
+        if(err) console.log(err);
+        if(doc.length === 0){
+            res.send({
+                code: code_ERR,
+                msg: '没有找到该用户信息'
+            })
+        }else {
+            res.send({
+                code: code_Ok,
+                msg: '头像修改成功'
+            })
+        }
+    })
+};
 
 // 删除用户
 const delUser = (req, res) => {
     model.User.findOneAndRemove({ _id: req.body.id }, err => {
-        if(err) console.log(err)
-        console.log('删除用户成功')
+        if(err) console.log(err);
         res.json({
             success: true
         })
     })
-}
+};
 
 
 
@@ -163,5 +183,6 @@ module.exports = (router) => {
     router.post('/login', Login),
     router.get('/user', checkToken, User),
     router.post('/delUser', checkToken, delUser),
-    router.post('/userInfo', checkToken, userInfo)
-}
+    router.post('/userInfo', checkToken, userInfo),
+    router.post('/update_head_pic', checkToken, updateHeadPic)
+};
